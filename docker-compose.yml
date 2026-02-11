@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Redis Stack with Search & Query
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: hive-redis
+    ports:
+      - "6379:6379"    # Redis
+      - "8001:8001"      # RedisInsight UI
+    volumes:
+      - redis_data:/data
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 4gb
+      --maxmemory-policy volatile-lru
+      --appendonly yes
+      --save 1
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+  # Orchestrator API
+  orchestrator:
+    build: ./orchestrator
+    container_name: hive-orchestrator
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-stack:6379
+      - LANCEDB_PATH=/data/hive_cold_memory.lance
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LOG_LEVEL=DEBUG
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - lancedb_data:/data
+      - ./schemas:/app/schemas:ro
+      - ./.env:/.env:ro
+    depends_on:
+      redis-stack:
+        condition: service_healthy
+    command: >
+      uvicorn main:app
+      --host 0.0.0.0
+      --port 8000
+      --log-level ${LOG_LEVEL}
+      --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  redis_data:
+  lancedb_data:
