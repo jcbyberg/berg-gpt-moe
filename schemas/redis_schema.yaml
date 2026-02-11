@@ -1,0 +1,33 @@
+version: '0.1.0'
+
+index:
+  name: hive_hot_memory
+  prefix: ctx:
+  storage_type: hash
+
+fields:
+  - name: agent_id
+    type: tag
+  
+  - name: content
+    type: text
+  
+  - name: timestamp
+    type: numeric
+  
+  - name: data_type
+    type: tag
+  
+  - name: metadata
+    type: text
+  
+  - name: embedding
+    type: vector
+    attrs:
+      dims: 768
+      distance_metric: cosine
+      algorithm: hnsw
+      datatype: float32
+      ef_runtime: 100
+      ef_construction: 200
+      m: 16
