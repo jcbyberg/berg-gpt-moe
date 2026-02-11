@@ -1,0 +1,110 @@
+{
+  "system_config": {
+    "global_context_bus": "Context-7 (RedisVL)",
+    "long_term_memory": "LanceDB",
+    "concurrency_mode": "Async/Parallel",
+    "max_parallel_agents": 10
+  },
+  "agents": {
+    "res_01_web": {
+      "id": "res_01_web",
+      "name": "Web Scout",
+      "role": "Web Search Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["tavily_search"],
+      "hot_memory_prefix": "ctx:web:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_02_code": {
+      "id": "res_02_code",
+      "name": "Code Hunter",
+      "role": "Code Search Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["github_search_code", "github_search_repos"],
+      "hot_memory_prefix": "ctx:code:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_03_debug": {
+      "id": "res_03_debug",
+      "name": "The Fixer",
+      "role": "Debugging Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["stack_overflow_search"],
+      "hot_memory_prefix": "ctx:debug:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_04_video": {
+      "id": "res_04_video",
+      "name": "The Watcher",
+      "role": "Video Analysis Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["youtube_transcript", "youtube_search"],
+      "hot_memory_prefix": "ctx:video:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_05_academic": {
+      "id": "res_05_academic",
+      "name": "The Scholar",
+      "role": "Academic Research Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["arxiv_search", "arxiv_fetch"],
+      "hot_memory_prefix": "ctx:scholar:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_06_wiki": {
+      "id": "res_06_wiki",
+      "name": "The Fact Checker",
+      "role": "Fact Verification Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["wikipedia_search", "wikipedia_fetch"],
+      "hot_memory_prefix": "ctx:wiki:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_07_privacy": {
+      "id": "res_07_privacy",
+      "name": "Privacy Scout",
+      "role": "Privacy Research Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["ddg_search"],
+      "hot_memory_prefix": "ctx:ddg:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_08_fetch": {
+      "id": "res_08_fetch",
+      "name": "Deep Fetcher",
+      "role": "Deep Web Fetching Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["puppeteer_navigate", "puppeteer_extract"],
+      "hot_memory_prefix": "ctx:fetch:",
+      "max_retries": 3,
+      "timeout": 60
+    },
+    "res_09_social": {
+      "id": "res_09_social",
+      "name": "Social Sentiment",
+      "role": "Social Media Analysis Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["reddit_search", "reddit_analyze"],
+      "hot_memory_prefix": "ctx:social:",
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "res_10_files": {
+      "id": "res_10_files",
+      "name": "Context Analyst",
+      "role": "File Analysis Specialist",
+      "model": "gemini-2.5-flash",
+      "tools": ["filesystem_search", "filesystem_read"],
+      "hot_memory_prefix": "ctx:files:",
+      "max_retries": 3,
+      "timeout": 30
+    }
+  }
+}
