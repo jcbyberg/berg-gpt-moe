@@ -1,0 +1,12 @@
+{
+  "active_plan": ".sisyphus/plans/add-zai-fallback.md",
+  "started_at": "2026-02-12T14:45:00.000Z",
+  "session_ids": [],
+  "plan_name": "add-zai-fallback",
+  "progress": {
+    "1": {"status": "pending"},
+    "2": {"status": "pending"},
+    "3": {"status": "pending"},
+    "4": {"status": "pending"}
+  }
+}

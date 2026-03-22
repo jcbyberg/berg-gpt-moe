@@ -1,35 +1,37 @@
 """Structured logging configuration."""
 
+import logging
 import structlog
 import sys
 
 
-def configure_logging(log_level: str = "INFO") -> None:
+def configure_logging(log_level: str = "INFO"):
     """Configure structured logging for the application."""
-    
+
+    logging.basicConfig(
+        level=log_level.upper(),
+        format="%(message)s",
+        stream=sys.stdout,
+    )
+
     structlog.configure(
-        handlers=[
-            structlog.processors.LogfmtRenderer(),
-            structlog.stdlib.ProcessorFormatter(
-                structlog.dev.ConsoleRenderer(),
-            ),
+        processors=[
+            structlog.stdlib.filter_by_level,
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        wrapper_class=structlog.stdlib.BoundLogger,
         cache_logger_on_first_use=True,
     )
-    
+
+    # Get a logger with the new configuration
     logger = structlog.get_logger()
-    
-    # Set log level
-    level_map = {
-        "DEBUG": structlog.DEBUG,
-        "INFO": structlog.INFO,
-        "WARNING": structlog.WARNING,
-        "ERROR": structlog.ERROR,
-        "CRITICAL": structlog.CRITICAL,
-    }
-    
-    logger.setLevel(level_map.get(log_level.upper(), structlog.INFO))
-    
     return logger
 
 
